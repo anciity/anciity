@@ -130,7 +130,7 @@ const { headings } = await render(series)
     </button>
   </div>
 
-  <!-- Кнопка серий для мобильных экранов -->
+  <!-- Series button for mobile screens -->
   <mobile-button
     id='toggle-panel-mobile'
     class='size-12 flex items-center justify-center block sm:hidden fixed bottom-4 shadow-[0px_10px_25px_rgba(0,0,0,0.15)] border border-special-lighter right-4 z-50 rounded-lg bg-bgColor text-accent-base hover:text-bg-accent-base/90'
@@ -143,7 +143,7 @@ const { headings } = await render(series)
     </span>
   </mobile-button>
 
-  <!-- Кнопка таблицы контента для мобильных экранов -->
+  <!-- Table of contents button for mobile screens -->
   <!--
 	<mobile-button
 		id="toggle-toc-mobile"
@@ -159,148 +159,147 @@ const { headings } = await render(series)
 
 <script>
   const ANIMATION_DURATION = 300
-  // Получаем элементы кнопок и панели
+  // Get the button and panel elements
   const togglePanelBtn = document.getElementById('toggle-panel')
   const closePanelBtn = document.getElementById('close-panel')
   const seriesPanel = document.getElementById('series-panel')
   const togglePanelMobileBtn = document.getElementById('toggle-panel-mobile')
 
-  // Убедимся, что seriesPanel существует
+  // Only proceed if seriesPanel exists
   if (!seriesPanel) {
-    console.error('Элемент series-panel не найден')
-    throw new Error('series-panel is required')
-  }
-
-  // Функция для проверки, видима ли панель
-  const isPanelVisible = () => {
-    const isScreenLg = window.matchMedia('(min-width: 1024px)').matches // Большие экраны
-    return (
-      (isScreenLg && seriesPanel.classList.contains('lg:block')) ||
-      (!isScreenLg && !seriesPanel.classList.contains('hidden'))
-    )
-  }
-
-  // Функция для скрытия панели
-  const hidePanel = () => {
-    seriesPanel.classList.add('opacity-0', '-translate-x-full')
-    setTimeout(() => {
-      seriesPanel.classList.remove('block', 'lg:block')
-      seriesPanel.classList.add('hidden')
-    }, ANIMATION_DURATION)
-  }
-
-  // Функция для показа панели
-  const showPanel = () => {
-    seriesPanel.classList.remove('hidden')
-    seriesPanel.classList.add('block', 'lg:block')
-    setTimeout(() => {
-      seriesPanel.classList.remove('opacity-0', '-translate-x-full')
-    }, 10)
-  }
-
-  // Общий обработчик для обеих кнопок
-  const togglePanel = () => {
-    if (isPanelVisible()) {
-      hidePanel() // Если видима, скрываем
-    } else {
-      showPanel() // Если скрыта, показываем
+    console.debug('Element series-panel not found, skipping series panel functionality')
+  } else {
+    // Function to check if the panel is visible
+    const isPanelVisible = () => {
+      const isScreenLg = window.matchMedia('(min-width: 1024px)').matches // Large screens
+      return (
+        (isScreenLg && seriesPanel.classList.contains('lg:block')) ||
+        (!isScreenLg && !seriesPanel.classList.contains('hidden'))
+      )
     }
-  }
 
-  // Обработчики событий для обеих кнопок
-  if (togglePanelBtn) {
-    togglePanelBtn.addEventListener('click', togglePanel)
-  } else {
-    console.error('Элемент toggle-panel не найден')
-  }
+    // Function to hide the panel
+    const hidePanel = () => {
+      seriesPanel.classList.add('opacity-0', '-translate-x-full')
+      setTimeout(() => {
+        seriesPanel.classList.remove('block', 'lg:block')
+        seriesPanel.classList.add('hidden')
+      }, ANIMATION_DURATION)
+    }
 
-  if (togglePanelMobileBtn) {
-    togglePanelMobileBtn.addEventListener('click', togglePanel)
-  } else {
-    console.error('Элемент toggle-panel-mobile не найден')
-  }
+    // Function to show the panel
+    const showPanel = () => {
+      seriesPanel.classList.remove('hidden')
+      seriesPanel.classList.add('block', 'lg:block')
+      setTimeout(() => {
+        seriesPanel.classList.remove('opacity-0', '-translate-x-full')
+      }, 10)
+    }
 
-  if (closePanelBtn) {
-    closePanelBtn.addEventListener('click', hidePanel)
-  } else {
-    console.error('Элемент close-panel не найден')
+    // General handler for both buttons
+    const togglePanel = () => {
+      if (isPanelVisible()) {
+        hidePanel() // If visible, hide
+      } else {
+        showPanel() // If hidden, show
+      }
+    }
+
+    // Event handlers for both buttons
+    if (togglePanelBtn) {
+      togglePanelBtn.addEventListener('click', togglePanel)
+    } else {
+      console.error('Element toggle-panel not found')
+    }
+
+    if (togglePanelMobileBtn) {
+      togglePanelMobileBtn.addEventListener('click', togglePanel)
+    } else {
+      console.error('Element toggle-panel-mobile not found')
+    }
+
+    if (closePanelBtn) {
+      closePanelBtn.addEventListener('click', hidePanel)
+    } else {
+      console.error('Element close-panel not found')
+    }
   }
 </script>
 
 <script>
-  // Получаем элементы кнопок и панели
+  // Get the button and panel elements
   const toggleTocBtn = document.getElementById('toggle-toc')
   const closeTocBtn = document.getElementById('close-toc')
   const tocPanel = document.getElementById('toc-panel')
   const toggleTocMobileBtn = document.getElementById('toggle-toc-mobile')
 
-  // Проверяем наличие панели (обязательно для работы)
+  // Only proceed if tocPanel exists
   if (!tocPanel) {
-    console.error('Элемент toc-panel не найден')
-    throw new Error('toc-panel is required')
-  }
-
-  // Функция для проверки, видима ли таблица контента
-  const isTocVisible = () => {
-    const isScreenMd = window.matchMedia('(min-width: 768px)').matches
-    return (
-      (isScreenMd && tocPanel.classList.contains('md:block')) || (!isScreenMd && !tocPanel.classList.contains('hidden'))
-    )
-  }
-
-  // Функция для скрытия панели
-  const hideToc = () => {
-    tocPanel.classList.add('hidden')
-    tocPanel.classList.remove('md:block')
-  }
-
-  // Функция для показа панели
-  const showToc = () => {
-    tocPanel.classList.remove('hidden')
-    tocPanel.classList.add('md:block')
-  }
-
-  // Общий обработчик для обеих кнопок
-  const toggleToc = () => {
-    if (isTocVisible()) {
-      hideToc() // Если видима, скрываем
-    } else {
-      showToc() // Если скрыта, показываем
+    console.debug('Element toc-panel not found, skipping toc panel functionality')
+  } else {
+    // Function to check if the table of contents is visible
+    const isTocVisible = () => {
+      const isScreenMd = window.matchMedia('(min-width: 768px)').matches
+      return (
+        (isScreenMd && tocPanel.classList.contains('md:block')) ||
+        (!isScreenMd && !tocPanel.classList.contains('hidden'))
+      )
     }
-  }
 
-  // Добавляем обработчик для кнопки переключения
-  if (toggleTocBtn) {
-    toggleTocBtn.addEventListener('click', toggleToc)
-  } else {
-    console.error('Элемент toggle-toc не найден')
-  }
+    // Function to hide the panel
+    const hideToc = () => {
+      tocPanel.classList.add('hidden')
+      tocPanel.classList.remove('md:block')
+    }
 
-  // Добавляем обработчик для кнопки переключения
-  if (toggleTocMobileBtn) {
-    toggleTocMobileBtn.addEventListener('click', toggleToc)
-  } else {
-    console.error('Элемент toggle-toc-mobile не найден')
-  }
+    // Function to show the panel
+    const showToc = () => {
+      tocPanel.classList.remove('hidden')
+      tocPanel.classList.add('md:block')
+    }
 
-  // Добавляем обработчик для кнопки закрытия
-  if (closeTocBtn) {
-    closeTocBtn.addEventListener('click', hideToc)
-  } else {
-    console.error('Элемент close-toc не найден')
+    // General handler for both buttons
+    const toggleToc = () => {
+      if (isTocVisible()) {
+        hideToc() // If visible, hide
+      } else {
+        showToc() // If hidden, show
+      }
+    }
+
+    // Add event handler for the toggle button
+    if (toggleTocBtn) {
+      toggleTocBtn.addEventListener('click', toggleToc)
+    } else {
+      console.error('Element toggle-toc not found')
+    }
+
+    // Add event handler for the mobile toggle button
+    if (toggleTocMobileBtn) {
+      toggleTocMobileBtn.addEventListener('click', toggleToc)
+    } else {
+      console.error('Element toggle-toc-mobile not found')
+    }
+
+    // Add event handler for the close button
+    if (closeTocBtn) {
+      closeTocBtn.addEventListener('click', hideToc)
+    } else {
+      console.error('Element close-toc not found')
+    }
   }
 </script>
 
 <script>
-  // Ждем загрузки контента
+  // Wait for content to load
   document.addEventListener('DOMContentLoaded', () => {
     const buttonsPanel = document.getElementById('buttons-panel')
 
     if (buttonsPanel) {
       buttonsPanel.classList.add('fixed')
-      console.log("Класс 'fixed' добавлен к элементу buttons-panel.")
+      console.log("Class 'fixed' added to the buttons-panel element.")
     } else {
-      console.error("Элемент с ID 'buttons-panel' не найден.")
+      console.error("Element with ID 'buttons-panel' not found.")
     }
   })
 </script>

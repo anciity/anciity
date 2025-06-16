@@ -3,7 +3,14 @@
 ---
 
 <script>
-  import { init } from '@aptabase/web'
+  import { init, trackEvent } from '@aptabase/web'
 
+  // Initialize Aptabase
   init('A-US-9473926409')
+
+  // Track page view when the page loads
+  trackEvent('page_view', {
+    page: window.location.pathname,
+    title: document.title
+  })
 </script>
