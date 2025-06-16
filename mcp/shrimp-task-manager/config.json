@@ -1,0 +1,30 @@
+{
+  "name": "shrimp-task-manager",
+  "description": "智能任务管理系统，专为 AI Agent 设计，提供结构化任务规划、自动分解、执行追踪和完整性验证",
+  "version": "latest",
+  "type": "npm",
+  "config": {
+    "command": "npx",
+    "args": ["-y", "mcp-shrimp-task-manager"],
+    "timeout": 600,
+    "env": {
+      "https_proxy": "http://127.0.0.1:7897",
+      "http_proxy": "http://127.0.0.1:7897",
+      "all_proxy": "socks5://127.0.0.1:7897",
+      "DATA_DIR": "./mcp/shrimp-task-manager/data",
+      "TEMPLATES_USE": "zh",
+      "ENABLE_GUI": "false"
+    },
+    "autoApprove": [
+      "plan_task",
+      "analyze_task",
+      "reflect_task",
+      "split_tasks",
+      "list_tasks",
+      "execute_task",
+      "verify_task",
+      "research_mode",
+      "init_project_rules"
+    ]
+  }
+}

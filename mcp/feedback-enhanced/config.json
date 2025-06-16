@@ -1,0 +1,20 @@
+{
+  "name": "mcp-feedback-enhanced",
+  "description": "Enhanced MCP server for interactive user feedback and command execution",
+  "version": "latest",
+  "type": "python",
+  "config": {
+    "command": "uvx",
+    "args": ["-i", "https://pypi.tuna.tsinghua.edu.cn/simple", "mcp-feedback-enhanced@latest"],
+    "timeout": 600,
+    "env": {
+      "https_proxy": "http://127.0.0.1:7897",
+      "http_proxy": "http://127.0.0.1:7897",
+      "all_proxy": "socks5://127.0.0.1:7897",
+      "MCP_DESKTOP_MODE": "true",
+      "MCP_WEB_PORT": "8765",
+      "MCP_DEBUG": "false"
+    },
+    "autoApprove": ["interactive_feedback"]
+  }
+}

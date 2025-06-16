@@ -1,0 +1,84 @@
+{
+  "mcpServers": {
+    "context7": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@upstash/context7-mcp@latest"
+      ],
+      "timeout": 600,
+      "env": {
+        "https_proxy": "http://127.0.0.1:7897",
+        "http_proxy": "http://127.0.0.1:7897",
+        "all_proxy": "socks5://127.0.0.1:7897"
+      },
+      "autoApprove": [
+        "resolve-library-id",
+        "get-library-docs"
+      ]
+    },
+    "mcp-feedback-enhanced": {
+      "command": "uvx",
+      "args": [
+        "-i",
+        "https://pypi.tuna.tsinghua.edu.cn/simple",
+        "mcp-feedback-enhanced@latest"
+      ],
+      "timeout": 600,
+      "env": {
+        "https_proxy": "http://127.0.0.1:7897",
+        "http_proxy": "http://127.0.0.1:7897",
+        "all_proxy": "socks5://127.0.0.1:7897",
+        "MCP_DESKTOP_MODE": "true",
+        "MCP_WEB_PORT": "8765",
+        "MCP_DEBUG": "false"
+      },
+      "autoApprove": [
+        "interactive_feedback"
+      ]
+    },
+    "sequential-thinking": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "mcp-sequentialthinking-tools"
+      ],
+      "timeout": 600,
+      "env": {
+        "https_proxy": "http://127.0.0.1:7897",
+        "http_proxy": "http://127.0.0.1:7897",
+        "all_proxy": "socks5://127.0.0.1:7897"
+      },
+      "autoApprove": [
+        "sequentialthinking_tools"
+      ]
+    },
+    "shrimp-task-manager": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "mcp-shrimp-task-manager"
+      ],
+      "timeout": 600,
+      "env": {
+        "https_proxy": "http://127.0.0.1:7897",
+        "http_proxy": "http://127.0.0.1:7897",
+        "all_proxy": "socks5://127.0.0.1:7897",
+        "DATA_DIR": "./mcp/shrimp-task-manager/data",
+        "TEMPLATES_USE": "zh",
+        "ENABLE_GUI": "false"
+      },
+      "autoApprove": [
+        "plan_task",
+        "analyze_task",
+        "reflect_task",
+        "split_tasks",
+        "list_tasks",
+        "execute_task",
+        "verify_task",
+        "research_mode",
+        "init_project_rules"
+      ]
+    }
+  }
+}

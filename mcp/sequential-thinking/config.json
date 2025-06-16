@@ -1,0 +1,17 @@
+{
+  "name": "sequential-thinking",
+  "description": "顺序思维工具，通过分步思考和工具推荐指导复杂问题解决，提供智能的决策支持",
+  "version": "latest",
+  "type": "npm",
+  "config": {
+    "command": "npx",
+    "args": ["-y", "mcp-sequentialthinking-tools"],
+    "timeout": 600,
+    "env": {
+      "https_proxy": "http://127.0.0.1:7897",
+      "http_proxy": "http://127.0.0.1:7897",
+      "all_proxy": "socks5://127.0.0.1:7897"
+    },
+    "autoApprove": ["sequentialthinking_tools"]
+  }
+}

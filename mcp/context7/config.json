@@ -1,0 +1,17 @@
+{
+  "name": "context7",
+  "description": "获取最新的库文档和代码示例，解决 AI 编程助手依赖过时训练数据的问题",
+  "version": "latest",
+  "type": "npm",
+  "config": {
+    "command": "npx",
+    "args": ["-y", "@upstash/context7-mcp@latest"],
+    "timeout": 600,
+    "env": {
+      "https_proxy": "http://127.0.0.1:7897",
+      "http_proxy": "http://127.0.0.1:7897",
+      "all_proxy": "socks5://127.0.0.1:7897"
+    },
+    "autoApprove": ["resolve-library-id", "get-library-docs"]
+  }
+}

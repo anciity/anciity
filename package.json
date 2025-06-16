@@ -14,7 +14,9 @@
     "format:imports": "biome check --formatter-enabled=false --write",
     "check": "astro check",
     "font:optimize": "node scripts/font-optimizer.js",
-    "prebuild": "pnpm run font:optimize"
+    "prebuild": "pnpm run font:optimize",
+    "mcp": "node mcp/mcp-manager.js all",
+    "mcp:list": "node mcp/mcp-manager.js list"
   },
   "dependencies": {
     "@astrojs/mdx": "4.0.3",
