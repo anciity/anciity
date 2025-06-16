@@ -19,6 +19,7 @@
     "mcp:list": "node mcp/mcp-manager.js list"
   },
   "dependencies": {
+    "@aptabase/web": "^0.4.3",
     "@astrojs/mdx": "4.0.3",
     "@astrojs/rss": "4.0.11",
     "@astrojs/sitemap": "3.2.1",

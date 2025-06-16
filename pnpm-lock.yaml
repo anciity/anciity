@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@aptabase/web':
+        specifier: ^0.4.3
+        version: 0.4.3
       '@astrojs/mdx':
         specifier: 4.0.3
         version: 4.0.3(astro@5.1.2(@types/node@22.13.10)(jiti@1.21.7)(rollup@4.35.0)(typescript@5.8.2)(yaml@2.7.0))
@@ -150,6 +153,9 @@ packages:
 
   '@antfu/utils@8.1.1':
     resolution: {integrity: sha512-Mex9nXf9vR6AhcXmMrlz/HVgYYZpVGJ6YlPgwl7UnaFpnshXs6EK/oa5Gpf3CzENMjkvEx2tQtntGnb7UtSTOQ==}
+
+  '@aptabase/web@0.4.3':
+    resolution: {integrity: sha512-IcFGvgEcc26chrRDmnOxzH/HLeNexrAoDx2DjNFAoTjfZCSJmxrABqseVLlTI7JeGKfDdIVI+IC3AWj5v+2J0A==}
 
   '@astrojs/check@0.9.4':
     resolution: {integrity: sha512-IOheHwCtpUfvogHHsvu0AbeRZEnjJg3MopdLddkJE70mULItS/Vh37BHcI00mcOJcH1vhD3odbpvWokpxam7xA==}
@@ -5120,6 +5126,8 @@ snapshots:
       tinyexec: 0.3.2
 
   '@antfu/utils@8.1.1': {}
+
+  '@aptabase/web@0.4.3': {}
 
   '@astrojs/check@0.9.4(prettier-plugin-astro@0.14.1)(prettier@3.5.3)(typescript@5.8.2)':
     dependencies:
