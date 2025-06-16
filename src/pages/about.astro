@@ -1,0 +1,31 @@
+---
+import PageLayout from '@/layouts/Base.astro'
+
+const meta = {
+  description: "I'm a starter theme for Astro.build",
+  title: '关于'
+}
+---
+
+<PageLayout meta={meta}>
+  <div class='prose prose-citrus max-w-none'>
+    <p>我是一个大前端开发者，也是技术爱好者。</p>
+    <p>分享一下我的个人特点：</p>
+    <ul class='list-inside list-disc' role='list'>
+      <li>对编程有自己独特的见解</li>
+      <li>喜欢研究技术，技术让我感觉到快乐</li>
+      <li>抽象派、融会贯通</li>
+      <li>喜欢学习、分享、思考</li>
+      <li>喜欢拥抱新鲜事物，关注前沿科技</li>
+    </ul>
+    <p>
+      欢迎在 <a
+        aria-label='github repository'
+        class='citrus-link inline-block'
+        href='https://github.com/anciity'
+        rel='noreferrer'
+        target='_blank'>Github</a
+      > 中关注我！
+    </p>
+  </div>
+</PageLayout>
