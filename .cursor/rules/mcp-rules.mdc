@@ -1,5 +1,6 @@
 ---
 description: MCP 工具使用规则
+globs: 
 alwaysApply: true
 ---
 
