@@ -1,11 +1,9 @@
 ---
 title: 'JavaScript 事件循环模型'
-publishDate: '22 06 2025'
+publishDate: '22 Jun 2025'
 description: '作为一个前端程序员，虽然我们并不需要去写一个像JS一样的语言。但是我们需要知道它是如何运行的，这有助于我们解决写代码时遇见的问题，优化页面性能，能更好的去合理化的书写代码。'
 tags: ['JavaScript']
 ---
-
-
 
 ## 介绍
 
@@ -19,8 +17,6 @@ tags: ['JavaScript']
 - 微任务队列：用于 Promise 和回调的高优先级队列 `MutationObserver`。微任务在任务队列中的任务之前执行。
 - 事件循环：不断检查调用栈是否为空，并将微任务队列或任务队列中的任务推送到调用栈执行。
 
-
-
 ## 工作原理
 
 1. 清空调用栈，执行**同步任务**
@@ -30,8 +26,6 @@ tags: ['JavaScript']
    - 若样式或布局改变，进行渲染
    - 若此帧有富余时间，执行 `requestIdleCallback` 的回调**闲时任务**
 4. 从个任务源中取下一个**宏任务**，继续步骤 1
-
-
 
 ## 任务类型
 
@@ -43,13 +37,9 @@ tags: ['JavaScript']
 - 渲染帧任务：仅在需要刷新帧时触发，`requestAnimationFrame`
 - 闲时任务：只在本帧剩余时间充裕时执行，否则延迟或直到 `timeout` 兜底，`requestIdleCallback`
 
-
-
 ## 任务干预
 
 浏览器为我们提供了一些干预 `API`，你可以在优化重活时调用它们。
-
-
 
 ### 微任务 queueMicrotask
 
@@ -58,16 +48,12 @@ tags: ['JavaScript']
 ```javascript
 queueMicrotask(() => {
   // function contents here
-});
+})
 ```
-
-
 
 ### 宏任务
 
- `setTimeout`、 `setInterval`、`DOM` 事件、`HTTP`等等就不举例了。
-
-
+`setTimeout`、 `setInterval`、`DOM` 事件、`HTTP`等等就不举例了。
 
 ### 渲染帧 requestAnimationFrame
 
@@ -76,27 +62,25 @@ queueMicrotask(() => {
 回调函数的调用频率通常与屏幕刷新率一致。最常见的刷新率为 60hz（每秒 60 次/帧），但 75hz、120hz 和 144hz 也较为常用。 为了提升性能和电池续航， `requestAnimationFrame()` 大多数浏览器在后台标签页或隐藏页面运行时都会暂停调用。
 
 ```javascript
-const element = document.getElementById("some-element-you-want-to-animate");
-let start;
+const element = document.getElementById('some-element-you-want-to-animate')
+let start
 
 function step(timestamp) {
   if (start === undefined) {
-    start = timestamp;
+    start = timestamp
   }
-  const elapsed = timestamp - start;
+  const elapsed = timestamp - start
 
   // Math.min() is used here to make sure the element stops at exactly 200px
-  const shift = Math.min(0.1 * elapsed, 200);
-  element.style.transform = `translateX(${shift}px)`;
+  const shift = Math.min(0.1 * elapsed, 200)
+  element.style.transform = `translateX(${shift}px)`
   if (shift < 200) {
-    requestAnimationFrame(step);
+    requestAnimationFrame(step)
   }
 }
 
-requestAnimationFrame(step);
+requestAnimationFrame(step)
 ```
-
-
 
 ### 闲时任务 requestIdleCallback
 
