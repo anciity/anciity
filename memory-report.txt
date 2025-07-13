@@ -1,0 +1,17 @@
+
+📊 内存使用统计报告
+==================
+⏱️  总构建时间: 27.9s
+📈 数据采样点: 55个
+
+🔥 峰值内存使用:
+   - RSS (常驻内存): 33.64 MB
+   - 堆内存使用: 3.97 MB
+   - 堆内存总量: 5.30 MB
+
+📊 平均内存使用:
+   - RSS (常驻内存): 27.02 MB
+   - 堆内存使用: 3.76 MB
+
+📁 详细日志: /Users/city/Documents/Codes/anciity/anciity/memory-usage.log
+📈 CSV数据: /Users/city/Documents/Codes/anciity/anciity/memory-usage.csv

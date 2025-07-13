@@ -18,74 +18,107 @@ import { html } from 'satori-html'
 import fs from 'fs'
 import path from 'path'
 
-// Read logo file and convert to base64
-const logoPath = path.join(process.cwd(), 'public/icon.png')
-const logoBuffer = fs.readFileSync(logoPath)
-const cityLogoBase64 = `data:image/png;base64,${logoBuffer.toString('base64')}`
+// 缓存字体 buffers 以避免重复读取
+let fontBuffersCache: { [key: string]: Buffer } | null = null
+let logoBase64Cache: string | null = null
 
-const ogOptions: SatoriOptions = {
-  // debug: true,
-  fonts: [
-    // Inter字体优先处理ASCII字符（包括空格）
-    {
-      data: Buffer.from(InterRegular),
-      name: 'Inter',
-      style: 'normal',
-      weight: 400
-    },
-    {
-      data: Buffer.from(InterMedium),
-      name: 'Inter',
-      style: 'normal',
-      weight: 500
-    },
-    {
-      data: Buffer.from(InterSemiBold),
-      name: 'Inter',
-      style: 'normal',
-      weight: 600
-    },
-    {
-      data: Buffer.from(InterBold),
-      name: 'Inter',
-      style: 'normal',
-      weight: 700
-    },
-    // Noto Sans SC作为CJK字符的回退字体
-    {
-      data: Buffer.from(NotoSansSCRegular),
-      name: 'Noto Sans SC',
-      style: 'normal',
-      weight: 400
-    },
-    {
-      data: Buffer.from(NotoSansSCMedium),
-      name: 'Noto Sans SC',
-      style: 'normal',
-      weight: 500
-    },
-    {
-      data: Buffer.from(NotoSansSCSemiBold),
-      name: 'Noto Sans SC',
-      style: 'normal',
-      weight: 600
-    },
-    {
-      data: Buffer.from(NotoSansSCBold),
-      name: 'Noto Sans SC',
-      style: 'normal',
-      weight: 700
+// 获取缓存的字体 buffers
+function getFontBuffers() {
+  if (!fontBuffersCache) {
+    fontBuffersCache = {
+      InterRegular: Buffer.from(InterRegular),
+      InterMedium: Buffer.from(InterMedium),
+      InterSemiBold: Buffer.from(InterSemiBold),
+      InterBold: Buffer.from(InterBold),
+      NotoSansSCRegular: Buffer.from(NotoSansSCRegular),
+      NotoSansSCMedium: Buffer.from(NotoSansSCMedium),
+      NotoSansSCSemiBold: Buffer.from(NotoSansSCSemiBold),
+      NotoSansSCBold: Buffer.from(NotoSansSCBold)
     }
-  ],
-  height: 630,
-  width: 1200,
-  loadAdditionalAsset: async (code: string, segment: string) => {
-    if (code === 'emoji') {
-      return `data:image/svg+xml;base64,${Buffer.from(await loadEmoji('twemoji', getIconCode(segment))).toString(
-        'base64'
-      )}`
+  }
+  return fontBuffersCache
+}
+
+// 获取缓存的 logo base64
+function getLogoBase64() {
+  if (!logoBase64Cache) {
+    const logoPath = path.join(process.cwd(), 'public/icon.png')
+    const logoBuffer = fs.readFileSync(logoPath)
+    logoBase64Cache = `data:image/png;base64,${logoBuffer.toString('base64')}`
+  }
+  return logoBase64Cache
+}
+
+function createSatoriOptions(): SatoriOptions {
+  const fonts = getFontBuffers()!
+
+  return {
+    fonts: [
+      // Inter字体优先处理ASCII字符（包括空格）
+      {
+        data: fonts.InterRegular as Buffer,
+        name: 'Inter',
+        style: 'normal',
+        weight: 400
+      },
+      {
+        data: fonts.InterMedium as Buffer,
+        name: 'Inter',
+        style: 'normal',
+        weight: 500
+      },
+      {
+        data: fonts.InterSemiBold as Buffer,
+        name: 'Inter',
+        style: 'normal',
+        weight: 600
+      },
+      {
+        data: fonts.InterBold as Buffer,
+        name: 'Inter',
+        style: 'normal',
+        weight: 700
+      },
+      // Noto Sans SC作为CJK字符的回退字体
+      {
+        data: fonts.NotoSansSCRegular as Buffer,
+        name: 'Noto Sans SC',
+        style: 'normal',
+        weight: 400
+      },
+      {
+        data: fonts.NotoSansSCMedium as Buffer,
+        name: 'Noto Sans SC',
+        style: 'normal',
+        weight: 500
+      },
+      {
+        data: fonts.NotoSansSCSemiBold as Buffer,
+        name: 'Noto Sans SC',
+        style: 'normal',
+        weight: 600
+      },
+      {
+        data: fonts.NotoSansSCBold as Buffer,
+        name: 'Noto Sans SC',
+        style: 'normal',
+        weight: 700
+      }
+    ],
+    height: 630,
+    width: 1200,
+    loadAdditionalAsset: async (code: string, segment: string) => {
+      if (code === 'emoji') {
+        try {
+          const emojiSvg = await loadEmoji('twemoji', getIconCode(segment))
+          return `data:image/svg+xml;base64,${Buffer.from(emojiSvg).toString('base64')}`
+        } catch (error) {
+          console.warn('Failed to load emoji:', segment, error)
+          return code
+        }
+      }
+      return code
     }
-    return code
   }
 }
 
@@ -117,37 +150,49 @@ const markup = (title: string, pubDate: string, logoUrl: string) => {
 type Props = InferGetStaticPropsType<typeof getStaticPaths>
 
 export async function GET(context: APIContext) {
-  const { pubDate, title } = context.props as Props
-  const postDate = getFormattedDate(pubDate, {
-    month: 'long',
-    weekday: 'long'
-  })
-
-  const svg = await satori(markup(title, postDate, cityLogoBase64), ogOptions)
-
-  // Проверяем, запрашивает ли пользователь PNG
-  if (context.url.pathname.endsWith('.png')) {
-    const png = new Resvg(svg).render().asPng()
-    return new Response(png, {
-      headers: {
-        'Cache-Control': 'public, max-age=31536000, immutable',
-        'Content-Type': 'image/png'
-      }
+  try {
+    const { pubDate, title } = context.props as Props
+    const postDate = getFormattedDate(pubDate, {
+      month: 'long',
+      weekday: 'long'
     })
-  }
 
-  // Проверяем, запрашивает ли пользователь SVG
-  if (context.url.pathname.endsWith('.svg')) {
-    return new Response(svg, {
-      headers: {
-        'Cache-Control': 'public, max-age=31536000',
-        'Content-Type': 'image/svg+xml; charset=utf-8'
-      }
-    })
-  }
+    // 使用缓存的配置和 logo
+    const ogOptions = createSatoriOptions()
+    const logoUrl = getLogoBase64()
 
-  // Если запрос не заканчивается на .png или .svg, возвращаем ошибку
-  return new Response('Unsupported format', { status: 400 })
+    const svg = await satori(markup(title, postDate, logoUrl), ogOptions)
+
+    // Проверяем, запрашивает ли пользователь PNG
+    if (context.url.pathname.endsWith('.png')) {
+      const resvg = new Resvg(svg)
+      const pngData = resvg.render()
+      const pngBuffer = pngData.asPng()
+
+      return new Response(pngBuffer, {
+        headers: {
+          'Cache-Control': 'public, max-age=31536000, immutable',
+          'Content-Type': 'image/png'
+        }
+      })
+    }
+
+    // Проверяем, запрашивает ли пользователь SVG
+    if (context.url.pathname.endsWith('.svg')) {
+      return new Response(svg, {
+        headers: {
+          'Cache-Control': 'public, max-age=31536000',
+          'Content-Type': 'image/svg+xml; charset=utf-8'
+        }
+      })
+    }
+
+    // Если запрос не заканчивается на .png или .svg, возвращаем ошибку
+    return new Response('Unsupported format', { status: 400 })
+  } catch (error) {
+    console.error('OG image generation error:', error)
+    return new Response('Internal Server Error', { status: 500 })
+  }
 }
 
 export async function getStaticPaths() {

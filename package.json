@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
-    "build": "astro build",
+    "build": "NODE_OPTIONS='--max-old-space-size=4096' astro build",
     "postbuild": "pagefind --site dist",
     "preview": "astro preview",
     "lint": "biome lint .",
@@ -15,6 +15,11 @@
     "check": "astro check",
     "font:optimize": "node scripts/font-optimizer.js",
     "prebuild": "pnpm run font:optimize",
+    "build:memory": "NODE_OPTIONS='--max-old-space-size=4096' node scripts/build-with-memory-stats.js",
+    "build:monitor": "NODE_OPTIONS='--max-old-space-size=4096' node scripts/memory-monitor.js pnpm build",
+    "build:netlify": "node scripts/netlify-build.js",
+    "build:accurate": "node scripts/process-memory-monitor.js pnpm build",
+    "analyze:og-memory": "node scripts/og-memory-analysis.js",
     "mcp": "node mcp/mcp-manager.js all",
     "mcp:list": "node mcp/mcp-manager.js list"
   },
